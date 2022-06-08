@@ -9,7 +9,7 @@ app = Flask(__name__)
  
 CORS(app)
 
-@app.route('/', methods=['GET','POST','DELETE'])
+@app.route('/', methods=['GET','POST','DELETE']) 
 def index():
 
     if request.method == 'GET':
