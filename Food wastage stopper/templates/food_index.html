@@ -5,15 +5,16 @@
         <form action='/' method='post'>
             <input placeholder='Name' name='name'>
             <input placeholder='Post Content' name='post'>
-            <input type='submit' value='Submit post'>
+            <input type= "submit" name="submit_post" value='Submit post'>
+        </form>
+        <form action='/' method='post'>
+            <input type= "submit" name="print_posts" value="Print posts"> 
+            <!-- To make the program print all the posts in the database -->
         </form>
         <form action='/' method='delete'>
             {%  for post in posts %}
             <div>{{post[1] + ': ' + post[2]}} <input type='submit' value='Delete post'> </div> 
             {% endfor %}
-        </form>
-        <form action='/' method='post'>
-            <input type='submit' value="Print posts">
         </form>
     </body>
 </html>

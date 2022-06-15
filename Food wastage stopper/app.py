@@ -16,11 +16,18 @@ def index():
         pass  
  
     if request.method == 'POST':
-        print_posts()
-        name = request.form.get('name')
-        post = request.form.get('post')
-        print(name + " " + post)
-        create_post(name, post)
+        if request.form['print_posts'] == 'Print posts':
+            print('Bye')
+        elif request.form['submit_post'] == 'Submit post':
+            name = request.form.get('name')
+            post = request.form.get('post')
+            print('Hello')
+            print(name + " " + post)
+            create_post(name, post)
+            print_posts()
+        else:
+            print("malformed")
+            pass # unknown
 
     if request.method == 'DELETE':
         name = request.form.get('name')

@@ -26,11 +26,12 @@ def remove_post(id):
     print('Post was removed')
     return ('Your post was removed') # To bring user back to frontpage. 
     
-# def print_posts():
-#     con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
-#     cur = con.cursor()
-#     posts = cur.fetchall()
-#     print(posts) # Posting all the posts to the terminal within the database.
-#     # print(posts[1])
+def print_posts():
+    con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
+    cur = con.cursor()
+    posts = cur.fetchall()
+    print(posts) # Posting all the posts to the terminal within the database.
+    print("endofposts")
+    # print(posts[1])
 
 
