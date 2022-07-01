@@ -32,6 +32,8 @@ def print_posts():
     posts = cur.fetchall()
     print(posts) # Posting all the posts to the terminal within the database.
     print("endofposts")
-    # print(posts[1])
+
+# def create_users():
+    
 
 

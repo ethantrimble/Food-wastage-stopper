@@ -13,7 +13,7 @@
         </form>
         <form action='/' method='delete'>
             {%  for post in posts %}
-            <div>{{post[1] + ': ' + post[2]}} <input type='submit' value='Delete post'> </div> 
+            <div>{{post[1] + ': ' + post[2]}} <input type="submit" name="delete_post" value="Delete post"> </div> 
             {% endfor %}
         </form>
     </body>

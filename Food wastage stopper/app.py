@@ -6,35 +6,36 @@ from flask_cors import CORS
 from food_models import create_post, get_posts, remove_post, print_posts
 
 app = Flask(__name__)
- 
-CORS(app)
 
+CORS(app)
+    
 @app.route('/', methods=['GET','POST','DELETE']) 
 def index():
 
     if request.method == 'GET':
         pass  
- 
+
     if request.method == 'POST':
-        if request.form['print_posts'] == 'Print posts':
+        if 'print_posts' in request.form:
             print('Bye')
-        elif request.form['submit_post'] == 'Submit post':
+            print(print_posts)
+        elif 'submit_post' in request.form:
             name = request.form.get('name')
             post = request.form.get('post')
-            print('Hello')
-            print(name + " " + post)
             create_post(name, post)
-            print_posts()
+            print('Hello')
+            print(name + post)
         else:
             print("malformed")
             pass # unknown
 
     if request.method == 'DELETE':
-        name = request.form.get('name')
-        post = request.form.get('post')
-        remove_post(name, post)
-        print('working')
- 
+        if 'delete_post' in request.form:
+            name = request.form.get('name')
+            post = request.form.get('post')
+            remove_post(name, post)
+            print('working')
+
     posts = get_posts()
    
     return render_template('food_index.html', posts=posts)
