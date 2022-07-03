@@ -13,18 +13,17 @@ CORS(app)
 def index():
 
     if request.method == 'GET':
-        pass  
+        pass
 
     if request.method == 'POST':
         if 'print_posts' in request.form:
             print('Bye')
-            print(print_posts)
+            print(get_posts)
         elif 'submit_post' in request.form:
             name = request.form.get('name')
             post = request.form.get('post')
             create_post(name, post)
             print('Hello')
-            print(name + post)
         else:
             print("malformed")
             pass # unknown
@@ -37,7 +36,7 @@ def index():
             print('working')
 
     posts = get_posts()
-   
+
     return render_template('food_index.html', posts=posts)
 # @app.route('/delete/<int:id>')
 # def delete(id, food_database):

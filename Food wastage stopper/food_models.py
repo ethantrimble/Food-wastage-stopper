@@ -9,12 +9,13 @@ def create_post(name, content):
     cur.execute('insert into posts (name, content) values( ?, ?)',(name, content))
     con.commit()
     con.close()
- 
+
 def get_posts():
     con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
-    cur.execute('select * from posts')
+    cur.execute('select * FROM posts')
     posts = cur.fetchall()
+    print(posts)
     return posts
 
 def remove_post(id):
@@ -33,7 +34,7 @@ def print_posts():
     print(posts) # Posting all the posts to the terminal within the database.
     print("endofposts")
 
-# def create_users():
+# def create_users(user_name, password, id):
     
 
 
