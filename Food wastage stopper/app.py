@@ -34,10 +34,21 @@ def index():
             post = request.form.get('post')
             remove_post(name, post)
             print('working')
+        # To delete a post.
 
     posts = get_posts()
 
     return render_template('food_index.html', posts=posts)
+
+@app.route('/user_signup', methods=['GET'])
+def login():
+
+    if request.method == 'GET':
+        pass
+    # if request.method == 'POST':
+    
+    return render_template('user_signup.html')
+
 # @app.route('/delete/<int:id>')
 # def delete(id, food_database):
 #     page_to_delete = post_mortem.query.get_or_404(name, content) # To assign the delete function to the intented post.

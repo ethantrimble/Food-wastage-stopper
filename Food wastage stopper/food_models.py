@@ -9,6 +9,7 @@ def create_post(name, content):
     cur.execute('insert into posts (name, content) values( ?, ?)',(name, content))
     con.commit()
     con.close()
+    # To create a new post.
 
 def get_posts():
     con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
@@ -17,6 +18,7 @@ def get_posts():
     posts = cur.fetchall()
     print(posts)
     return posts
+    # To send all the database data to the front end.
 
 def remove_post(id):
     db = sqlite3.connect(path.join(ROOT, 'food_database.db'))
@@ -26,15 +28,23 @@ def remove_post(id):
     db.close()
     print('Post was removed')
     return ('Your post was removed') # To bring user back to frontpage. 
+    # Removing the post.
     
 def print_posts():
     con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
     posts = cur.fetchall()
     print(posts) # Posting all the posts to the terminal within the database.
-    print("endofposts")
+    # To print all the posts in the database.
 
-# def create_users(user_name, password, id):
+def create_users(user_name, password):
+    con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
+    cur = con.cursor()
+    cur.execute('insert into posts (name, content) values( ?, ?)',(user_name, password))
+    con.commit()
+    con.close()
+    # Creating new user code.
+    
     
 
 
