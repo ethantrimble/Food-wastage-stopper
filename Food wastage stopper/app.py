@@ -3,7 +3,7 @@ from pdb import post_mortem
 from sqlite3 import dbapi2
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from food_models import create_post, get_posts, remove_post, print_posts
+from food_models import create_post, get_posts, get_users, remove_post
 
 app = Flask(__name__)
 
@@ -16,36 +16,42 @@ def index():
         pass
 
     if request.method == 'POST':
-        if 'print_posts' in request.form:
-            print('Bye')
-            print(get_posts)
-        elif 'submit_post' in request.form:
+        if 'submit_post' in request.form:
             name = request.form.get('name')
             post = request.form.get('post')
+            print('post start page')
             create_post(name, post)
-            print('Hello')
         else:
-            print("malformed")
-            pass # unknown
+            print('malformed post start page')
+            # unknown
 
     if request.method == 'DELETE':
         if 'delete_post' in request.form:
             name = request.form.get('name')
             post = request.form.get('post')
             remove_post(name, post)
-            print('working')
         # To delete a post.
 
     posts = get_posts()
 
     return render_template('food_index.html', posts=posts)
 
-@app.route('/user_signup', methods=['GET'])
+@app.route('/user_signup', methods=['GET','POST'])
 def login():
 
     if request.method == 'GET':
+        print('pass get login page')
         pass
-    # if request.method == 'POST':
+
+    if request.method == 'POST':
+        if 'submit_user_details' in request.form:
+            name = request.form.get('name')
+            password = request.form.get('password')
+            create_post(name, password)
+        elif 'print_users' in request.form:
+            print(get_users)
+        else:
+            print('malformed for page signup post')
     
     return render_template('user_signup.html')
 
