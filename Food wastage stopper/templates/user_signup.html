@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
     <body>
-        <form action="/" method="post">
+        <form action="/user_signup" method="post">
             <input placeholder='Name' name='name'>
             <input placeholder='Password' name='password'>
             <input type= "submit" name="submit_user_details" value='submit user details'>
             <!-- To create placeholder to type your name and password. -->
             <input type="submit" name="print_users" value="Print users">
+        </form>
+        <form action='/user_signup'>
+            {%  for user in users %}
+            <div>{{user[1] + ': ' + user[2]}}</div> 
+            {% endfor %}
+            <!-- Posting all the usernames in the database. -->
         </form>
     </body>
 </html>

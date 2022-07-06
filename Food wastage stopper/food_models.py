@@ -10,6 +10,8 @@ def create_post(name, content):
     con.commit()
     con.close()
     # To create a new post.
+    lastest_post_Id = splitListOfposts()[-1]
+    print(lastest_post_Id)
 
 def get_posts():
     con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
@@ -34,7 +36,7 @@ def splitListOfposts():
     print(x,'x')
     print(y,'y')
     print(z,'z')
-    return(x, y, z)
+    return(x)
 
 def remove_post(id):
     db = sqlite3.connect(path.join(ROOT, 'food_database.db'))
@@ -46,7 +48,7 @@ def remove_post(id):
 def create_users(user_name, password):
     con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
-    cur.execute('insert into users (name, content) values( ?, ?)',(user_name, password))
+    cur.execute('insert into users (user_name, password) values( ?, ?)',(user_name, password))
     con.commit()
     con.close()
     # Creating new user code.
@@ -56,7 +58,6 @@ def get_users():
     cur = con.cursor()
     cur.execute('select * FROM users')
     users = cur.fetchall()
-    print(users, 'get_users')
     return users
     # To send all the database data to the front end.
     

@@ -3,7 +3,7 @@ from pdb import post_mortem
 from sqlite3 import dbapi2
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from food_models import create_post, get_posts, get_users, remove_post
+from food_models import create_post, create_users, get_posts, get_users, remove_post
 
 app = Flask(__name__)
 
@@ -11,7 +11,6 @@ CORS(app)
     
 @app.route('/', methods=['GET','POST','DELETE']) 
 def index():
-
     if request.method == 'GET':
         pass
 
@@ -19,7 +18,6 @@ def index():
         if 'submit_post' in request.form:
             name = request.form.get('name')
             post = request.form.get('post')
-            print('post start page')
             create_post(name, post)
         else:
             print('malformed post start page')
@@ -45,15 +43,16 @@ def login():
 
     if request.method == 'POST':
         if 'submit_user_details' in request.form:
-            name = request.form.get('name')
+            user_name = request.form.get('name')
             password = request.form.get('password')
-            create_post(name, password)
+            create_users(user_name, password)
         elif 'print_users' in request.form:
-            print(get_users)
+            print(get_users())
         else:
             print('malformed for page signup post')
+    users = get_users()
     
-    return render_template('user_signup.html')
+    return render_template('user_signup.html', users=users)
 
 # @app.route('/delete/<int:id>')
 # def delete(id, food_database):
