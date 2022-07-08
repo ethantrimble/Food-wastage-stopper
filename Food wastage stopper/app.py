@@ -3,7 +3,7 @@ from pdb import post_mortem
 from sqlite3 import dbapi2
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from food_models import create_post, create_users, get_posts, get_users, remove_post
+from food_models import create_post, get_posts, remove_post, create_users, get_users
 
 app = Flask(__name__)
 
@@ -19,15 +19,16 @@ def index():
             name = request.form.get('name')
             post = request.form.get('post')
             create_post(name, post)
+        elif 'print_posts' in request.form:
+            print(get_posts(),'printed get posts start page')
         else:
             print('malformed post start page')
             # unknown
 
     if request.method == 'DELETE':
         if 'delete_post' in request.form:
-            name = request.form.get('name')
-            post = request.form.get('post')
-            remove_post(name, post)
+            print('delete post front page')
+            remove_post(-1)
         # To delete a post.
 
     posts = get_posts()
@@ -38,7 +39,6 @@ def index():
 def login():
 
     if request.method == 'GET':
-        print('pass get login page')
         pass
 
     if request.method == 'POST':
@@ -54,24 +54,6 @@ def login():
     
     return render_template('user_signup.html', users=users)
 
-# @app.route('/delete/<int:id>')
-# def delete(id, food_database):
-#     page_to_delete = post_mortem.query.get_or_404(name, content) # To assign the delete function to the intented post.
-#     name = Noneform=UserForm()
-
-#     try:
-#         db.session.delete(page_to_delete)
-#         db.session.commit()
-
-#         our_users = Users.query.order_by(User.)
-#         return render_template("add_user.html",
-
-#     except:
-#         print("Whoops error")
-#         return render_template("add_user.html",)
-
-#     # return render_template('food_index.html')
- 
 if __name__ == '__main__':
     app.run(debug=True)
 

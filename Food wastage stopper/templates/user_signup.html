@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<title>Food wastage stopper signup</title>
 <html lang="en">
     <body>
         <form action="/user_signup" method="post">
@@ -9,8 +10,8 @@
             <input type="submit" name="print_users" value="Print users">
         </form>
         <form action='/user_signup'>
-            {%  for user in users %}
-            <div>{{user[1] + ': ' + user[2]}}</div> 
+            {%  for post in users %}
+            <div>{{post[1] + ': ' + post[2]}}</div> 
             {% endfor %}
             <!-- Posting all the usernames in the database. -->
         </form>

@@ -1,5 +1,5 @@
 import sqlite3
-from os import path
+from os import curdir, path
 
 ROOT = path.dirname(path.relpath((__file__)))
 
@@ -21,6 +21,13 @@ def get_posts():
     return posts
     # To send all the database data to the front end.
 
+def remove_post(id):
+    db = sqlite3.connect(path.join(ROOT, 'food_database.db'))
+    c = db.cursor()
+    c.execute('DELETE FROM posts WHERE id = ?;',id)
+    db.commit()
+    db.close()
+
 def splitListOfTuples(lst):
   lst1 = []
   lst2 = []
@@ -33,17 +40,7 @@ def splitListOfTuples(lst):
 
 def splitListOfposts():
     x, y, z = splitListOfTuples(get_posts())
-    print(x,'x')
-    print(y,'y')
-    print(z,'z')
     return(x)
-
-def remove_post(id):
-    db = sqlite3.connect(path.join(ROOT, 'food_database.db'))
-    c = db.cursor()
-    c.execute('DELETE FROM posts WHERE id = ?;',id)
-    db.commit()
-    db.close()
 
 def create_users(user_name, password):
     con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
@@ -60,6 +57,13 @@ def get_users():
     users = cur.fetchall()
     return users
     # To send all the database data to the front end.
+
+def remove_post(id):
+    con = sqlite3.connect(path.join(ROOT, 'food_database.db'))
+    cur= con.cursor()
+    cur.execute('DELETE FROM posts WHERE id = ?', id)
+    con.commit()
+    con.close()
     
     
 
