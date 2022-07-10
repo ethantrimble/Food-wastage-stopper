@@ -9,6 +9,10 @@
             <!-- To create placeholder to type your name and password. -->
             <input type="submit" name="print_users" value="Print users">
         </form>
+        <form action='/user_sign_in'>
+            <button type='submit'>user sign in page</button>
+            <!-- Button to bring a user to the user signup page. -->
+        </form>
         <form action='/user_signup'>
             {%  for post in users %}
             <div>{{post[1] + ': ' + post[2]}}</div> 

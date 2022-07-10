@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<title>Food wastage stopper sign in</title>
+<html lang="en">
+    <body>
+        <form action="/user_sign_in" method="post">
+            <input placeholder='Name' name='name'>
+            <input placeholder='Password' name='password'>
+            <input type= "submit" name="sig_in" value='sign in'>
+            <!-- To create placeholder to type your name and password. -->
+        </form>
+        <form action='/'>
+            <button type='submit'>Back to home page</button>
+            <!-- Button to bring a user to the user signup page. -->
+        </form>
+        <form action='/user_sign_in'>
+            <div>{{signedin}}</div> 
+        </form>
+    </body>
+</html>

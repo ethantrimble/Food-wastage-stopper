@@ -3,7 +3,7 @@ from pdb import post_mortem
 from sqlite3 import dbapi2
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from food_models import create_post, get_posts, remove_post, create_users, get_users
+from food_models import create_post, get_posts, remove_post, create_users, get_users, splitListOfusers_y, splitListOfusers_z
 
 app = Flask(__name__)
 
@@ -36,7 +36,7 @@ def index():
     return render_template('food_index.html', posts=posts)
 
 @app.route('/user_signup', methods=['GET','POST'])
-def login():
+def signup():
 
     if request.method == 'GET':
         pass
@@ -47,12 +47,33 @@ def login():
             password = request.form.get('password')
             create_users(user_name, password)
         elif 'print_users' in request.form:
-            print(get_users())
+            print(get_users(None))
         else:
             print('malformed for page signup post')
-    users = get_users()
+    users = get_users(None)
     
     return render_template('user_signup.html', users=users)
+
+@app.route('/user_sign_in', methods=['GET','POST'])
+def login():
+    	
+    users = get_users(None)
+    users_y = splitListOfusers_y()
+    users_z = splitListOfusers_z()
+    if request.method == 'GET':
+        pass
+    signedin = 'Either password or username is incorrect'
+    if request.method == 'POST':
+        if 'sig_in' in request.form:
+            Name = request.form.get('name')
+            Password = request.form.get('password')
+            print(Name,' name and password ',Password)
+            for i in range(len(users)):
+                if(users_y[i] == Name and users_z[i] == Password):
+                    signedin = 'You are signed in'
+    
+
+    return render_template('user_sign_in.html', signedin=signedin)
 
 if __name__ == '__main__':
     app.run(debug=True)
