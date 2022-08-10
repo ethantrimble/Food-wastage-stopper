@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <title>Food wastage stopper sign in</title>
 <html lang="en">
+    <head>
+        <style>
+            body {
+                background-image: url('C:\Users\ethan\Documents\food_wastage_stopper\Food wastage stopper\Background\Nuggets.jpeg');
+                background-repeat: no-repeat;
+                background-attachment: fixed; 
+                background-size: 100% 100%;
+            }
+            .top-left {
+                position: absolute;
+                top: 8px;
+                right: 16px;
+            }
+        </style>
+    </head>
     <body>
         <form action="/user_sign_in" method="post">
             <input placeholder='Name' name='name'>
@@ -8,12 +23,12 @@
             <input type= "submit" name="sig_in" value='sign in'>
             <!-- To create placeholder to type your name and password. -->
         </form>
-        <form action='/'>
-            <button type='submit'>Back to home page</button>
-            <!-- Button to bring a user to the user signup page. -->
-        </form>
+        <form action='/'><button type='submit'>Back to home page</button></form> <form action='/user_signup'><button type='submit'>Back to user signup</button></form>
+        <form action='/extra'><button type='submit'>extra</button></form>
+            <!-- Buttons to bring a user to the home page and signup page. -->
         <form action='/user_sign_in'>
             <div>{{signedin}}</div> 
+            <div class="top-left">User sign in</div>
         </form>
     </body>
 </html>

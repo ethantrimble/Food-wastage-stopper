@@ -3,21 +3,40 @@
 <html lang="en">
     <body>
         <form action="/user_signup" method="post">
-            <input placeholder='Name' name='name'>
-            <input placeholder='Password' name='password'>
+            <input class='placeholder' placeholder='Name' name='name'>
+            <input class='placeholder' placeholder='Password' name='password'>
             <input type= "submit" name="submit_user_details" value='submit user details'>
             <!-- To create placeholder to type your name and password. -->
             <input type="submit" name="print_users" value="Print users">
         </form>
-        <form action='/user_sign_in'>
-            <button type='submit'>user sign in page</button>
-            <!-- Button to bring a user to the user signup page. -->
-        </form>
+        
+        <form action='/'><button type='submit'>Back to home page</button></form> <form action='/user_sign_in'><button type='submit'>user sign in page</button></form>
+            <!-- Buttons to bring a user to the user signup page and the homepage. -->
+        
         <form action='/user_signup'>
             {%  for post in users %}
             <div>{{post[1] + ': ' + post[2]}}</div> 
+            <div class="top-left">User sign up</div>
             {% endfor %}
             <!-- Posting all the usernames in the database. -->
         </form>
     </body>
+    <head>
+        <style>
+            body {
+                background-image: url('C:\Users\ethan\Documents\food_wastage_stopper\Food wastage stopper\Background\Lech Lake.jpg');
+                background-repeat: no-repeat;
+                background-attachment: fixed; 
+                background-size: 100% 100%;
+            }
+            .top-left {
+                position: absolute;
+                top: 8px;
+                right: 16px;
+            }
+            .placeholder {
+                right: -80px;
+            }
+        </style>
+    </head>
 </html>

@@ -60,20 +60,31 @@ def login():
     users = get_users(None)
     users_y = splitListOfusers_y()
     users_z = splitListOfusers_z()
+    signedin = ''
+    if_true = False
     if request.method == 'GET':
         pass
-    signedin = 'Either password or username is incorrect'
     if request.method == 'POST':
         if 'sig_in' in request.form:
             Name = request.form.get('name')
             Password = request.form.get('password')
             print(Name,' name and password ',Password)
-            for i in range(len(users)):
+            for i in range(len(users) and if_true == False):
                 if(users_y[i] == Name and users_z[i] == Password):
                     signedin = 'You are signed in'
-    
+                    if_true == True
+                    # So when the if statement finds two values that work it stops searching for values that could also work.
+                else:
+                    signedin = 'Either password or username is incorrect'
 
     return render_template('user_sign_in.html', signedin=signedin)
+
+@app.route('/extra', methods=['GET','POST'])
+def extra():
+    if request.method == 'GET':
+        pass
+
+    return render_template('extra.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
