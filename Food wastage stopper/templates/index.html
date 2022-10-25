@@ -1,26 +1,30 @@
+<!-- {% extends "base.html" %}
+
+{% block content %}
+
 <!doctype html>
-<title>Food wastage stopper</title>
-<html>
-    <body>
-        <form action='/' method='post'>
-            <input class = "posts_boxs" required type ="text" placeholder='Name' name='name'>
-            <input class = "posts_content" required type ="text" placeholder='Post Content' name='post'>
-            <input class="submit_post" type= "submit" name="submit_post" value='Submit post'>
-            <input class="print_posts" type="submit" name="print_posts" value="Print posts">
-            <!-- To make the program print all the posts in the database. -->
-        </form>
-        <form action='/user_signup'>
-            <button type='submit'>user signup page</button>
-            <!-- Button to bring a user to the user signup page. -->
-        </form>
-        <form action='/' method='delete'>
+    <html>
+        <body>
+            <form action='/' method='post'>
+                <input class = "posts_boxs" required type ="text" placeholder='Name' name='name'>
+                <input class = "posts_content" required type ="text" placeholder='Post Content' name='post'>
+                <input class="submit_post" type= "submit" name="submit_post" value='Submit post'>
+                <input class="print_posts" type="submit" name="print_posts" value="Print posts">
+                <--To make the program print all the posts in the database. -->
+            <!-- </form>
+        </body>
+    </html>
+</doctype>
+
+{% endblock %} --> 
+
+        <!-- <form action='/' method='delete'>
             {%  for post in posts %}
             <div>{{post[1] + ': ' + post[2]}} <input type="submit" name="delete_post" value="Delete post"> </div>
             <div class="title">Homepage</div>
             {% endfor %}
-            <!-- Posting all the posts in the database and creating the delete button. -->
-        </form>
-    </body>
+            Posting all the posts in the database and creating the delete button. -->
+        <!-- </form>
     <head>
         <style>
             body {
@@ -61,10 +65,6 @@
                 position: relative;
                 left: 72px;
             }
-            /* .filter:focus ~ .placeholder,
-            .filter:valid ~ .placeholder {
-                display: none;
-            } */
         </style>
     </head>
-</html>
+</html> --> 

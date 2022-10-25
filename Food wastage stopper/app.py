@@ -1,91 +1,63 @@
-from contextlib import nullcontext
-from pdb import post_mortem
-from sqlite3 import dbapi2
-from flask import Flask, render_template, request
-from flask_cors import CORS
-from food_models import create_post, get_posts, remove_post, create_users, get_users, splitListOfusers_y, splitListOfusers_z
+from flask import Blueprint, render_template, redirect, url_for, request, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, login_required, logout_user
+from .models import User
+from . import db
 
-app = Flask(__name__)
+auth = Blueprint('auth', __name__)
 
-CORS(app)
-    
-@app.route('/', methods=['GET','POST','DELETE']) 
-def index():
-    if request.method == 'GET':
-        pass
-
-    if request.method == 'POST':
-        if 'submit_post' in request.form:
-            name = request.form.get('name')
-            post = request.form.get('post')
-            create_post(name, post)
-        elif 'print_posts' in request.form:
-            print(get_posts(),'printed get posts start page')
-        else:
-            print('malformed post start page')
-            # unknown
-
-    if request.method == 'DELETE':
-        if 'delete_post' in request.form:
-            print('delete post front page')
-            remove_post(-1)
-        # To delete a post.
-
-    posts = get_posts()
-
-    return render_template('food_index.html', posts=posts)
-
-@app.route('/user_signup', methods=['GET','POST'])
-def signup():
-
-    if request.method == 'GET':
-        pass
-
-    if request.method == 'POST':
-        if 'submit_user_details' in request.form:
-            user_name = request.form.get('name')
-            password = request.form.get('password')
-            create_users(user_name, password)
-        elif 'print_users' in request.form:
-            print(get_users(None))
-        else:
-            print('malformed for page signup post')
-    users = get_users(None)
-    
-    return render_template('user_signup.html', users=users)
-
-@app.route('/user_sign_in', methods=['GET','POST'])
+@auth.route('/login')
 def login():
-    	
-    users = get_users(None)
-    users_y = splitListOfusers_y()
-    users_z = splitListOfusers_z()
-    signedin = ''
-    if_true = False
-    if request.method == 'GET':
-        pass
-    if request.method == 'POST':
-        if 'sig_in' in request.form:
-            Name = request.form.get('name')
-            Password = request.form.get('password')
-            print(Name,' name and password ',Password)
-            for i in range(len(users) and if_true == False):
-                if(users_y[i] == Name and users_z[i] == Password):
-                    signedin = 'You are signed in'
-                    if_true == True
-                    # So when the if statement finds two values that work it stops searching for values that could also work.
-                else:
-                    signedin = 'Either password or username is incorrect'
+    return render_template('login.html')
 
-    return render_template('user_sign_in.html', signedin=signedin)
+@auth.route('/login', methods=['POST'])
+def login_post():
+    # login code goes here
+    email = request.form.get('email')
+    password = request.form.get('password')
+    remember = True if request.form.get('remember') else False
 
-@app.route('/extra', methods=['GET','POST'])
-def extra():
-    if request.method == 'GET':
-        pass
+    user = User.query.filter_by(email=email).first()
 
-    return render_template('extra.html')
+    # check if the user actually exists
+    # take the user-supplied password, hash it, and compare it to the hashed password in the database
+    if not user or not check_password_hash(user.password, password):
+        flash('Please check your login details and try again.')
+        return redirect(url_for('auth.login')) # if the user doesn't exist or password is wrong, reload the page
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    # if the above check passes, then we know the user has the right credentials
+    login_user(user,remember=remember)
+    return redirect(url_for('main.profile'))
 
+@auth.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('main.index')
+
+@auth.route('/signup', methods=['POST'])
+def signup_post():
+    # code to validate and add user to database goes here
+    email = request.form.get('email')
+    name = request.form.get('name')
+    password = request.form.get('password')
+    print(email, name, password)
+
+    user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
+
+    if user: # if a user is found, we want to redirect back to signup page so user can try again
+        flash('Email address already exists')
+        return redirect('signup.html')
+
+    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+
+    # add the new user to the database
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect('login.html')
