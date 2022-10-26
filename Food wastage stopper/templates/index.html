@@ -1,70 +1,10 @@
-<!-- {% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-
-<!doctype html>
-    <html>
-        <body>
-            <form action='/' method='post'>
-                <input class = "posts_boxs" required type ="text" placeholder='Name' name='name'>
-                <input class = "posts_content" required type ="text" placeholder='Post Content' name='post'>
-                <input class="submit_post" type= "submit" name="submit_post" value='Submit post'>
-                <input class="print_posts" type="submit" name="print_posts" value="Print posts">
-                <--To make the program print all the posts in the database. -->
-            <!-- </form>
-        </body>
-    </html>
-</doctype>
-
-{% endblock %} --> 
-
-        <!-- <form action='/' method='delete'>
-            {%  for post in posts %}
-            <div>{{post[1] + ': ' + post[2]}} <input type="submit" name="delete_post" value="Delete post"> </div>
-            <div class="title">Homepage</div>
-            {% endfor %}
-            Posting all the posts in the database and creating the delete button. -->
-        <!-- </form>
-    <head>
-        <style>
-            body {
-                background-image: url('C:\Users\ethan\Documents\food_wastage_stopper\Food wastage stopper\Background\cal.png');
-                background-repeat: no-repeat;
-                background-attachment: fixed; 
-                background-size: 100% 100%;
-            }
-            .title {
-                position: absolute;
-                top: 8px;
-            }
-            .posts_boxs {
-                position: relative;
-                width: 195px;
-                height: 10px;
-                border-radius: 5px;
-                right: -80px;
-                outline: none;
-                padding: 5px;
-                border: 2px solid rgb(255, 4, 4);
-            }
-            .posts_content {
-                position: relative;
-                width: 195px;
-                height: 10px;
-                right: -80px;
-                border-radius: 5px;
-                outline: none;
-                padding: 5px;
-                border: 2px solid rgb(255, 4, 4);
-            }
-            .submit_post {
-                position: absolute;
-                right: 865px;
-            }
-            .print_posts {
-                position: relative;
-                left: 72px;
-            }
-        </style>
-    </head>
-</html> --> 
+<h1 class="title">
+  Flask Login Example
+</h1>
+<h2 class="subtitle">
+  Easy authentication and authorization in Flask.
+</h2>
+{% endblock %}
