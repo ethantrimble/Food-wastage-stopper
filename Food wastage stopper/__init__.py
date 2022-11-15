@@ -1,17 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_uploads import UploadSet, IMAGES, configure_uploads
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import SubmitField
-from flask import send_from_directory, url_for, render_template
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
-app = Flask(__name__)
 
 def create_app():
+    app = Flask(__name__)
 
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -38,31 +33,3 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
-
-app.config['SECRET_KEY'] = 'asldfkjlj'
-app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
-
-photos = UploadSet('photos', IMAGES)
-configure_uploads(app, photos)
-
-class UploadForm(FlaskForm):
-    photo = FileField(
-        validators=[
-            FileAllowed(photos, 'Only images are allowed'),
-            FileRequired('File field should not be empty')
-        ]
-    )
-    submit = SubmitField('Upload')
-@app.route('/uploads/<filename>')
-def get_file(filename):
-    return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
-
-@app.route('/posts', methods=['GET','POST'])
-def upload_image():
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        file_url = url_for('get_file', filename=filename)
-    else:
-        file_url = None
-    return render_template('posts.html', form=form, file_url=file_url)
