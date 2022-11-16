@@ -3,15 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 # init SQLAlchemy so we can use it later in our models
-db = SQLAlchemy()
+User_details = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
 
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User_details.sqlite'
 
-    db.init_app(app)
+    User_details.init_app(app)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

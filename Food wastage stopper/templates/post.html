@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <body>
+      {% if current_user.is_authenticated %}
+      <form action="/posts" method="post">
+        <input placeholder='Bidding price' name="price">
+        <input placeholder="Post content" name="post">
+        <input type="submit" value="Submit">
+      </form>
+      {% endif %}
+
+      {% for posts in post %}
+      <div> {{ posts[3] + ': ' + posts[1] + ': ' + posts[2] }}</div>
+      {% endfor %}
+    </body>
+  </head>
+</html>

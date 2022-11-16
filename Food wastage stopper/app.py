@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
 from .models import User
-from . import db
+from . import User_details
 
 auth = Blueprint('auth', __name__)
 
@@ -57,7 +57,7 @@ def signup_post():
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
 
     # add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
+    User_details.session.add(new_user)
+    User_details.session.commit()
 
     return redirect('login.html')
