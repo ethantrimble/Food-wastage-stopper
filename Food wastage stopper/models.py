@@ -2,6 +2,7 @@ from os import path
 from flask_login import UserMixin
 from . import User_details
 import sqlite3 as sql
+from sqlite3 import Error
 
 ROOT = path.dirname(path.relpath((__file__)))
 
@@ -11,10 +12,10 @@ class User(UserMixin, User_details.Model):
     password = User_details.Column(User_details.String(100))
     name = User_details.Column(User_details.String(1000))
 
-def create_post(price, content, user_name):
+def create_post(price, content, user_name, title, image):
     con = sql.connect(path.join(ROOT, 'food_database.db'))
-    cur = con.cursor()
-    cur.execute('insert into posts (price, content, user_name) values(?, ?, ?)', (price, content, user_name))
+    cur = con.cursor() 
+    cur.execute('insert into posts (price, content, user_name, title, image) values(?, ?, ?, ?, ?)', (price, content, user_name, title, image))
     con.commit()
     con.close()
     
@@ -24,3 +25,61 @@ def get_posts():
     cur.execute('select * from posts')
     posts = cur.fetchall()
     return posts
+
+def convert_into_binary(file_path):
+    with open(file_path, 'rb') as file:
+        binary = file.read()
+        return binary
+    
+def read_blob_data(entry_id):
+    try:
+        conn = sql.connect('food_database.db')
+        cur = conn.cursor()
+        sql_fetch_blob_query = 'SELECT * from posts where id = ?' 
+        cur.execute(sql_fetch_blob_query, (entry_id,))
+        record = cur.fetchall()
+        for row in record:
+            converted_file_name = row[1]
+            photo_binarycode = row[2]
+            last_slash_index = converted_file_name.rfind("/") + 1
+            final_file_name = converted_file_name[last_slash_index:]
+            write_to_file(photo_binarycode, final_file_name)
+        cur.close()
+    except sql.Error as error:
+        print('[INFO] " Failed to read blob data from sqlite table', error)
+    finally:
+        if conn:
+            conn.close()
+
+def write_to_file(binary_data, file_name):
+    with open(file_name, 'wb') as file:
+        file.write(binary_data)
+    print('[DATA] : The following file has been writen to the project directory: ', file_name)
+
+def insert_into_database(file_path_name, file_blob):
+    try:
+        conn = sql.connect('food_database.db')
+        cur = conn.cursor()
+        sql_insert_file_query = 'INSERT INTO posts(file_name, file_blob) VALUES(?, ?)'
+        cur == conn.cursor()
+        cur.execute(sql_insert_file_query, (file_path_name, file_blob, ))
+        conn.commit()
+        print('[INFO] : The blob for ', file_path_name, 'is in the database.')
+        last_updated_entry = cur.lastrowid
+        return last_updated_entry
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+        else:
+            error = 'Oh shucks, something is wrong here.'
+
+def main():
+    file_path_name = input('Enter full file path:\n')
+    file_blob = convert_into_binary(file_path_name)
+    last_updated_entry = insert_into_database(file_path_name, file_blob)
+    read_blob_data(last_updated_entry)
+
+if __name__ == '__main__':
+    main()
