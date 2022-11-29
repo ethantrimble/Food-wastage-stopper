@@ -1,4 +1,3 @@
-from flask import Blueprint, render_template, request
 from flask import Blueprint, render_template, request, redirect, Flask, url_for
 from flask_login import current_user, login_required
 
@@ -28,16 +27,17 @@ def post():
         user_name = current_user.name
         title = request.form.get('title')
         image = request.files['file']
-        create_post(price, content, user_name, title, 50)
     
         if image.filename == '':
             print("File name is invalid")
             return redirect(request.url)
         
         filename = secure_filename(image.filename)
+        # Assigning the name of the file to a variable.
 
         basedir = os.path.abspath(os.path.dirname(__file__))
         image.save(os.path.join(basedir,app.config["IMAGE_UPLOADS"],filename))
+        create_post(price, content, user_name, title, filename)
 
         return render_template('post.html',filename=filename,posts=get_posts())
     return render_template('post.html',posts=get_posts())

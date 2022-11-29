@@ -11,13 +11,6 @@ class User(UserMixin, User_details.Model):
     email = User_details.Column(User_details.String(100), unique=True)
     password = User_details.Column(User_details.String(100))
     name = User_details.Column(User_details.String(1000))
-
-def create_post(price, content, user_name, title, image):
-    con = sql.connect(path.join(ROOT, 'food_database.db'))
-    cur = con.cursor() 
-    cur.execute('insert into posts (price, content, user_name, title, image) values(?, ?, ?, ?, ?)', (price, content, user_name, title, image))
-    con.commit()
-    con.close()
     
 def get_posts():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
@@ -52,17 +45,17 @@ def read_blob_data(entry_id):
             conn.close()
 
 def write_to_file(binary_data, file_name):
-    with open(file_name, 'wb') as file:
-        file.write(binary_data)
+    with open(file_name, 'wb') as files:
+        files.write(binary_data.encode('utf-8'))
     print('[DATA] : The following file has been writen to the project directory: ', file_name)
 
-def insert_into_database(file_path_name, file_blob):
+def insert_into_database(price, content, user_name, title, file_path_name, file_blob):
     try:
         conn = sql.connect('food_database.db')
         cur = conn.cursor()
-        sql_insert_file_query = 'INSERT INTO posts(file_name, file_blob) VALUES(?, ?)'
-        cur == conn.cursor()
-        cur.execute(sql_insert_file_query, (file_path_name, file_blob, ))
+        sql_insert_file_query = 'INSERT INTO posts(price, content, user_name, title, file_name, file_blob) VALUES(?, ?, ?, ?, ?, ?)'
+        cur = conn.cursor()
+        cur.execute(sql_insert_file_query, (price, content, user_name, title, file_path_name, file_blob, ))
         conn.commit()
         print('[INFO] : The blob for ', file_path_name, 'is in the database.')
         last_updated_entry = cur.lastrowid
@@ -75,11 +68,9 @@ def insert_into_database(file_path_name, file_blob):
         else:
             error = 'Oh shucks, something is wrong here.'
 
-def main():
-    file_path_name = input('Enter full file path:\n')
+def create_post(price, content, user_name, title, filename):
+    file_path_name = (fr'C:\Users\ethan\Documents\food_wastage_stopper\Food wastage stopper\static\Images\{filename}')
     file_blob = convert_into_binary(file_path_name)
-    last_updated_entry = insert_into_database(file_path_name, file_blob)
-    read_blob_data(last_updated_entry)
-
-if __name__ == '__main__':
-    main()
+    # Assigning the file to a variable.
+    last_updated_entry = insert_into_database(price, content, user_name, title, file_path_name, file_blob)
+    read_blob_data(last_updated_entry) 
