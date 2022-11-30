@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, Flask, url_for
 from flask_login import current_user, login_required
 
 import os
-from .models import create_post, get_posts
+from .models import create_post, get_posts, get_contents
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -36,11 +36,12 @@ def post():
         # Assigning the name of the file to a variable.
 
         basedir = os.path.abspath(os.path.dirname(__file__))
-        image.save(os.path.join(basedir,app.config["IMAGE_UPLOADS"],filename))
+        image.save(os.path.join(basedir,app.config["IMAGE_UPLOADS"], filename))
         create_post(price, content, user_name, title, filename)
 
-        return render_template('post.html',filename=filename,posts=get_posts())
-    return render_template('post.html',posts=get_posts())
+        return render_template('post.html',filename=filename, contents=get_contents())
+    
+    return render_template('post.html', contents=get_contents())
 # To create posts and also redirect back to 'posts.html'.
 
 @app.route('/display/<filename>')

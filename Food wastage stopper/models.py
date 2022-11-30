@@ -12,6 +12,30 @@ class User(UserMixin, User_details.Model):
     password = User_details.Column(User_details.String(100))
     name = User_details.Column(User_details.String(1000))
     
+# def convert_back_into_image():
+#     image = Image.open('Also_speed.png')
+#     images = image.show()
+#     print(image)
+#     print(images)
+#     return images
+    
+def get_contents():
+    con = sql.connect(path.join(ROOT, 'food_database.db'))
+    cur = con.cursor()
+    database = cur.execute('select * from posts')
+    price = ''
+    content = ''
+    user_name = ''
+    title = ''
+    file_name =''
+    for x in database:
+        price += (f' {x[1]}')
+        content += (f' {x[2]}')
+        user_name += (f' {x[3]}')
+        title += (f' {x[4]}')
+        file_name += (f' {x[5]}') 
+    return price, content, user_name, title, file_name
+
 def get_posts():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
@@ -49,15 +73,15 @@ def write_to_file(binary_data, file_name):
         files.write(binary_data.encode('utf-8'))
     print('[DATA] : The following file has been writen to the project directory: ', file_name)
 
-def insert_into_database(price, content, user_name, title, file_path_name, file_blob):
+def insert_into_database(price, content, user_name, title, filename, file_blob):
     try:
         conn = sql.connect('food_database.db')
         cur = conn.cursor()
         sql_insert_file_query = 'INSERT INTO posts(price, content, user_name, title, file_name, file_blob) VALUES(?, ?, ?, ?, ?, ?)'
         cur = conn.cursor()
-        cur.execute(sql_insert_file_query, (price, content, user_name, title, file_path_name, file_blob, ))
+        cur.execute(sql_insert_file_query, (price, content, user_name, title, filename, file_blob, ))
         conn.commit()
-        print('[INFO] : The blob for ', file_path_name, 'is in the database.')
+        print('[INFO] : The blob for ', filename, 'is in the database.')
         last_updated_entry = cur.lastrowid
         return last_updated_entry
     except Error as e:
@@ -69,8 +93,7 @@ def insert_into_database(price, content, user_name, title, file_path_name, file_
             error = 'Oh shucks, something is wrong here.'
 
 def create_post(price, content, user_name, title, filename):
-    file_path_name = (fr'C:\Users\ethan\Documents\food_wastage_stopper\Food wastage stopper\static\Images\{filename}')
-    file_blob = convert_into_binary(file_path_name)
+    file_blob = convert_into_binary(fr'C:\Users\ethan\Documents\food_wastage_stopper\Food wastage stopper\static\Images\{filename}')
     # Assigning the file to a variable.
-    last_updated_entry = insert_into_database(price, content, user_name, title, file_path_name, file_blob)
+    last_updated_entry = insert_into_database(price, content, user_name, title, filename, file_blob)
     read_blob_data(last_updated_entry) 

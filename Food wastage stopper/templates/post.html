@@ -21,8 +21,10 @@
     <input type="submit" value="Submit">
   </p>
   <p>
-    {% for post in posts %}
-      <div>{{ post[1] + ':' + post[2] + ':' + post[3] + ':' + post[4] }}</div>
+    <div>{{ contents[0] }}</div>
+    
+    {% for names in file_name %}
+    <img src="{{ url_for('static',names = '/Images/'+names) }}">
     {% endfor %}
   </p>
 </form>
