@@ -22,9 +22,12 @@
   </p>
   <p>
     <div>{{ contents[0] }}</div>
+    <div>{{ contents[1] }}</div>
+    <div>{{ contents[2] }}</div>
+    <div>{{ contents[3] }}</div>
     
-    {% for names in file_name %}
-    <img src="{{ url_for('static',names = '/Images/'+names) }}">
+    {% for image_names in image_name %}
+    <img src="{{ url_for('static',filename = '/Images/'+image_names) }}">
     {% endfor %}
   </p>
 </form>

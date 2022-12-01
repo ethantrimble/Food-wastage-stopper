@@ -21,6 +21,13 @@ def profile():
 
 @main.route('/post', methods=['POST','GET'])
 def post():
+    contents=get_contents()
+    image_name = contents[4]
+    # Putting all the image names into its own variable.
+    single_image_name = image_name.split(' ')
+    # Splitting each image name into its own indice.
+    print(single_image_name)
+
     if request.method == 'POST':
         price = request.form.get('price')
         content = request.form.get('content')
@@ -39,9 +46,9 @@ def post():
         image.save(os.path.join(basedir,app.config["IMAGE_UPLOADS"], filename))
         create_post(price, content, user_name, title, filename)
 
-        return render_template('post.html',filename=filename, contents=get_contents())
+        return render_template('post.html',filename=filename, contents=contents, image_name=single_image_name)
     
-    return render_template('post.html', contents=get_contents())
+    return render_template('post.html', contents=contents, image_name=single_image_name)
 # To create posts and also redirect back to 'posts.html'.
 
 @app.route('/display/<filename>')

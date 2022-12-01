@@ -33,7 +33,9 @@ def get_contents():
         content += (f' {x[2]}')
         user_name += (f' {x[3]}')
         title += (f' {x[4]}')
-        file_name += (f' {x[5]}') 
+        file_name += (f' {x[5]}')
+    # for x in file_name:
+    #     print(x)
     return price, content, user_name, title, file_name
 
 def get_posts():
