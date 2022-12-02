@@ -12,38 +12,22 @@ class User(UserMixin, User_details.Model):
     password = User_details.Column(User_details.String(100))
     name = User_details.Column(User_details.String(1000))
     
-# def convert_back_into_image():
-#     image = Image.open('Also_speed.png')
-#     images = image.show()
-#     print(image)
-#     print(images)
-#     return images
-    
-def get_contents():
+def get_filenames():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
     database = cur.execute('select * from posts')
-    price = ''
-    content = ''
-    user_name = ''
-    title = ''
     file_name =''
     for x in database:
-        price += (f' {x[1]}')
-        content += (f' {x[2]}')
-        user_name += (f' {x[3]}')
-        title += (f' {x[4]}')
         file_name += (f' {x[5]}')
-    # for x in file_name:
-    #     print(x)
-    return price, content, user_name, title, file_name
+        # print(x)
+    return file_name
 
-def get_posts():
+def get_content():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
     cur.execute('select * from posts')
-    posts = cur.fetchall()
-    return posts
+    content = cur.fetchall()
+    return content
 
 def convert_into_binary(file_path):
     with open(file_path, 'rb') as file:

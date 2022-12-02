@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, Flask, url_for
 from flask_login import current_user, login_required
 
 import os
-from .models import create_post, get_posts, get_contents
+from .models import create_post, get_content, get_filenames
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -21,12 +21,17 @@ def profile():
 
 @main.route('/post', methods=['POST','GET'])
 def post():
-    contents=get_contents()
-    image_name = contents[4]
-    # Putting all the image names into its own variable.
-    single_image_name = image_name.split(' ')
-    # Splitting each image name into its own indice.
-    print(single_image_name)
+    content=get_content()
+    # Adding all the content in the database to the content variable.
+    image_name = get_filenames()
+    # Putting the image names into the variable image_names and the whole database into the content variable.
+
+    pre_single_image_name = image_name.split(' ')
+    # Splitting each image name into its own element.
+
+    single_content = content[::-1]
+    single_image_name = pre_single_image_name[::-1]
+    # Moving the start element to the back and end to start and everything in between for each variable.
 
     if request.method == 'POST':
         price = request.form.get('price')
@@ -40,15 +45,16 @@ def post():
             return redirect(request.url)
         
         filename = secure_filename(image.filename)
+
         # Assigning the name of the file to a variable.
 
         basedir = os.path.abspath(os.path.dirname(__file__))
         image.save(os.path.join(basedir,app.config["IMAGE_UPLOADS"], filename))
         create_post(price, content, user_name, title, filename)
 
-        return render_template('post.html',filename=filename, contents=contents, image_name=single_image_name)
+        return render_template('post.html',filename=filename, content=single_content, image_name=single_image_name)
     
-    return render_template('post.html', contents=contents, image_name=single_image_name)
+    return render_template('post.html', content=single_content, image_name=single_image_name)
 # To create posts and also redirect back to 'posts.html'.
 
 @app.route('/display/<filename>')
