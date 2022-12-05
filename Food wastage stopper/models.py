@@ -19,7 +19,6 @@ def get_filenames():
     file_name =''
     for x in database:
         file_name += (f' {x[5]}')
-        # print(x)
     return file_name
 
 def get_content():
@@ -53,7 +52,7 @@ def read_blob_data(entry_id):
     finally:
         if conn:
             conn.close()
-
+ 
 def write_to_file(binary_data, file_name):
     with open(file_name, 'wb') as files:
         files.write(binary_data.encode('utf-8'))

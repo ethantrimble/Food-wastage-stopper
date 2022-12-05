@@ -1,29 +1,37 @@
-<!DOCTYPE html>
-<title>Image Upload</title>
-<h2>Select a file to upload</h2>
+<html>
+  <title>Image Upload</title>
+  <h2>Select a file to upload</h2>
 
-{%  if filename %}
-<div>
-  <img src="{{ url_for('static',filename = '/Images/'+filename) }}">
-</div>
+  {%  if filename %}
+  <div>
+    <img src="{{ url_for('static',filename = '/Images/'+filename) }}" width = '500'>
+  </div>
 
-{% endif %}
-<form method="post" action="/post" enctype="multipart/form-data">
-  <p>
-    <input type="file" name="file" autocomplete="off" required>
-    <input placeholder="price" name="price">
-    <input placeholder="contents" name="content">
-    <input placeholder="title" name="title">
-  </p>
-  <p>
-    <input type="submit" value="Submit">
-  </p>
-  <p>
-    {% for contents in content %}
-    <div>{{' User: ' + contents[3] + '   Price: ' + contents[1] + '   contents: ' + contents[2] + '   title: ' + contents[4] }}</div>
-    {% endfor %}
-    {% for image_names in image_name %}
-      <img src="{{ url_for('static',filename = '/Images/'+image_names) }}">
-    {% endfor %}
-  </p>
-</form>
+  {% endif %}
+  <form method="post" action="/post" enctype="multipart/form-data">
+    <p>
+      <input type="file" name="file" autocomplete="off" required>
+      <input placeholder="price" name="price">
+      <input placeholder="contents" name="content">
+      <input placeholder="title" name="title">
+    </p>
+    <p>
+      <input type="submit" value="Submit">
+    </p>
+  </form>
+  <body>
+    <table>
+      <tr>
+        {% for row in content %}
+          <td>
+            <b> User: </b><i>{{ row[3] }}</i><b> Price: </b><i>{{ row[1] }}</i><b> Contents: </b><i>{{ row[2] }}</i><b> Title: </b><i>{{ row[4] }}</i><br>
+            <br>
+          </td>
+          <td>
+            <img src="{{ url_for('static', filename = '/images/'+row[5]) }}" width="300">
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+  </body>
+</html>
