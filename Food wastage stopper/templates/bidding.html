@@ -1,0 +1,22 @@
+<html>
+    <title>
+        Bidding page 
+    </title>
+    <body>
+        {% for x in post_part_of %}
+            <h2> Post {{ x }}</h2>
+            <form action = '/bidding' method="post">
+                <input placeholder = 'Bidding price' name = 'bidding price'>
+                <input placeholder = 'information' name = 'information'> 
+                <input value = {{ x }} type = "hidden" name = "ID_value">
+                <input type = 'submit' value = 'Submit'>
+            </form>
+                {% for x in post_part_of %}
+                    <div> {{ x }}</div>
+                {% endfor %}
+                {% for x in number_of_occurances %}
+                    <div> {{ x }}</div>
+                {% endfor %}
+        {% endfor %}
+    </body>
+</html>

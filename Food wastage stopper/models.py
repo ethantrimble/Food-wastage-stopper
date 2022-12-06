@@ -24,9 +24,54 @@ def get_filenames():
 def get_content():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
-    cur.execute('select * from posts')
+    database = cur.execute('select * from posts')
     content = cur.fetchall()
+    return content, database
+
+def get_bids():
+    con = sql.connect('Bidding.db')
+    cur = con.cursor()
+    content = cur.execute('select * from bids')
     return content
+
+def get_users(User_ID):
+    con = sql.connect('User_details.SQLITE')
+    cur = con.cursor()
+    cur.execute('select * from user')
+    content = cur.fetchall()
+    i = 0
+    name = ''
+    for x in content:
+        i += 1
+        if User_ID == i:
+            name = (f'{x[3]}')
+    return name    
+
+def bid_comments(post_part_of):
+    post_parts_of = []
+    for x in post_part_of:
+        post_parts_of.append(x[3])
+        # Adding all the post_part_of or what post the bid is for to a list. 
+    number_of_occurances = []
+    # Assigning every post_parts_of to post_part_of.
+    unique_post_values = list(dict.fromkeys(post_parts_of))
+    # Adding all unique values of post_parts_of to unique_post_values.
+    number_unique_elements = len(unique_post_values)
+    # Adding the amount of unique numbers.
+    for x in range(0, number_unique_elements):
+        number_of_occurances.append(post_parts_of.count(unique_post_values[x]))
+        # Adding the amount every value comes up to number_of_occurances.
+    print(unique_post_values)
+    print(number_of_occurances)
+    print('unique')
+    return unique_post_values, number_of_occurances
+
+def create_bid(price, information, post_ID, user_name):
+    con = sql.connect('Bidding.db')
+    cur = con.cursor()
+    cur.execute('insert into Bids (user_name, comment, post_part_of, price) values(?, ?, ?, ?)', (user_name, information, post_ID, price))
+    con.commit()
+    con.close()
 
 def convert_into_binary(file_path):
     with open(file_path, 'rb') as file:

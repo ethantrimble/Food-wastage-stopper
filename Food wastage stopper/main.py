@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, Flask, url_for
 from flask_login import current_user, login_required
+import re
 
 import os
-from .models import create_post, get_content, get_filenames
+from .models import create_post, get_content, get_filenames, create_bid, bid_comments, get_bids
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -10,7 +11,7 @@ app = Flask(__name__)
 app.config['IMAGE_UPLOADS'] = (r'C:\Users\ethan\Documents\food_wastage_stopper\Food wastage stopper\static\Images')
 main = Blueprint('main', __name__)
 
-@main.route('/')    
+@main.route('/')
 def home():
     return render_template('home.html')
 
@@ -19,9 +20,28 @@ def home():
 def profile():
     return render_template('profile.html', name=current_user.name)
 
+@login_required
+@main.route('/bidding',methods=['GET','POST'])
+def bids():
+    if request.method == 'GET':
+        pass
+
+    if request.method == 'POST':
+        price = request.form.get('bidding price')
+        information = request.form.get('information')
+        post_ID = request.form.get('ID_value',"")
+        print(post_ID)
+        user_name = current_user.name
+        create_bid(price, information, post_ID, user_name)
+
+    bids = get_bids()
+    bid = bid_comments(bids)
+    # Importing all the data from the database.
+    return render_template('bidding.html', name=current_user.name, post_part_of=bid[0], number_of_occurances=bid[1])
+
 @main.route('/post', methods=['POST','GET'])
 def post():
-    content=get_content()
+    content=get_content()[0]
     # Adding all the content in the database to the content variable.
     image_name = get_filenames()
     # Putting the image names into the variable image_names and the whole database into the content variable.
