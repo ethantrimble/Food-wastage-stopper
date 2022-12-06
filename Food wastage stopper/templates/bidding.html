@@ -3,7 +3,7 @@
         Bidding page 
     </title>
     <body>
-        {% for x in post_part_of %}
+        {% for x in unique_post_values %}
             <h2> Post {{ x }}</h2>
             <form action = '/bidding' method="post">
                 <input placeholder = 'Bidding price' name = 'bidding price'>
@@ -11,7 +11,7 @@
                 <input value = {{ x }} type = "hidden" name = "ID_value">
                 <input type = 'submit' value = 'Submit'>
             </form>
-                {% for x in post_part_of %}
+                {% for x in unique_post_values %}
                     <div> {{ x }}</div>
                 {% endfor %}
                 {% for x in number_of_occurances %}

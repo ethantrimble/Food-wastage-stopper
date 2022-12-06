@@ -24,9 +24,15 @@ def get_filenames():
 def get_content():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
-    database = cur.execute('select * from posts')
+    cur.execute('select * from posts')
     content = cur.fetchall()
-    return content, database
+    return content
+
+def get_database():
+    con = sql.connect(path.join(ROOT, 'food_database.db'))
+    cur = con.cursor()
+    database = cur.execute('select * from posts')
+    return database
 
 def get_bids():
     con = sql.connect('Bidding.db')
@@ -61,9 +67,6 @@ def bid_comments(post_part_of):
     for x in range(0, number_unique_elements):
         number_of_occurances.append(post_parts_of.count(unique_post_values[x]))
         # Adding the amount every value comes up to number_of_occurances.
-    print(unique_post_values)
-    print(number_of_occurances)
-    print('unique')
     return unique_post_values, number_of_occurances
 
 def create_bid(price, information, post_ID, user_name):

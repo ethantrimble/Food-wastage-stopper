@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 import re
 
 import os
-from .models import create_post, get_content, get_filenames, create_bid, bid_comments, get_bids
+from .models import create_post, get_content, get_filenames, create_bid, bid_comments, get_bids, get_database
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -30,18 +30,25 @@ def bids():
         price = request.form.get('bidding price')
         information = request.form.get('information')
         post_ID = request.form.get('ID_value',"")
-        print(post_ID)
+        print(post_ID + information + price)
         user_name = current_user.name
         create_bid(price, information, post_ID, user_name)
 
-    bids = get_bids()
-    bid = bid_comments(bids)
+    bid = get_database()
+    bids = []
+    for x in bid:
+        bids.append(x[0])
+    number_of_occurances = bid_comments(get_bids())[1]
+    # Adding all the unique post values to bid.
+    final_bid = bids[::-1]
+    final_occurance = number_of_occurances[::-1]
+    # Reversing all the unique post values to put the most recent posts on the top of the page on the bidding page.
     # Importing all the data from the database.
-    return render_template('bidding.html', name=current_user.name, post_part_of=bid[0], number_of_occurances=bid[1])
+    return render_template('bidding.html', name=current_user.name, unique_post_values=final_bid, number_of_occurances=final_occurance)
 
 @main.route('/post', methods=['POST','GET'])
 def post():
-    content=get_content()[0]
+    content=get_content()
     # Adding all the content in the database to the content variable.
     image_name = get_filenames()
     # Putting the image names into the variable image_names and the whole database into the content variable.
