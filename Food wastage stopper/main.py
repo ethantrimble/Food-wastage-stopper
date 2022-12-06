@@ -33,18 +33,41 @@ def bids():
         print(post_ID + information + price)
         user_name = current_user.name
         create_bid(price, information, post_ID, user_name)
+        # Creating post.
 
     bid = get_database()
     bids = []
+    submission = get_bids()
+    user_name = []
+    comment = []
+    price = []
+    Post_ID = []
+    # Creating lists and defining functions as variables
+    for x in submission:
+        user_name.append(x[1])
+        comment.append(x[2])
+        price.append(x[4])
+        Post_ID.append(x[3])
+    # Adding specific details of the submission variable to these variables.
+    selected_content = []
+    bid_database_len = len(user_name)
+    for x in range(0, bid_database_len):
+        pre_list = []
+        pre_list.extend((user_name[x], comment[x], price[x], Post_ID[x]))
+        selected_content.append(pre_list)
+        # Adding all columns of the rows that are going to be put on the website to selected_content.
     for x in bid:
         bids.append(x[0])
+        # Adding all the ID's of the food_database or the post ID's to bids.
     number_of_occurances = bid_comments(get_bids())[1]
     # Adding all the unique post values to bid.
     final_bid = bids[::-1]
     final_occurance = number_of_occurances[::-1]
-    # Reversing all the unique post values to put the most recent posts on the top of the page on the bidding page.
-    # Importing all the data from the database.
-    return render_template('bidding.html', name=current_user.name, unique_post_values=final_bid, number_of_occurances=final_occurance)
+    # Reversing all the unique post values and id's of the post to put the most recent posts on the top of the page on the bidding page.
+    final_string_bid = []
+    for x in final_bid:
+        final_string_bid.append(str(x))
+    return render_template('bidding.html', name=current_user.name, unique_post_values=final_string_bid, content=selected_content)
 
 @main.route('/post', methods=['POST','GET'])
 def post():
@@ -87,3 +110,4 @@ def post():
 @app.route('/display/<filename>')
 def display_image(filename):
     return redirect(url_for('static', filename = '/Images/' + filename, code=301))
+    # Displaying any posts created in the current season.

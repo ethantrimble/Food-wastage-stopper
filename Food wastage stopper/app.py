@@ -38,6 +38,7 @@ def signup():
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
+    # Code to logout the user.
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():

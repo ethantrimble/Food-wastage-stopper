@@ -1,5 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
 <html>
   <title>Image Upload</title>
+  <h2>You must be logged into an account to bid for food</h2>
   <h2>Select a file to upload</h2>
 
   {%  if filename %}
@@ -24,7 +28,7 @@
       <tr>
         {% for row in content %}
           <td>
-            <b> User: </b><i>{{ row[3] }}</i><b> Price: </b><i>{{ row[1] }}</i><b> Contents: </b><i>{{ row[2] }}</i><b> Title: </b><i>{{ row[4] }}</i><b> Post ID: </b><i>{{ row[0] }}</i><br>
+            <b> User: </b><i>{{ row[3] }}</i><b> Price: </b><i>{{ row[1] }}</i><b> Contents: </b><i>{{ row[2] }}</i><b> Title: </b><i>{{ row[4] }}</i><b> Post </b><i>{{ row[0] }}</i><br>
             <br>
           </td>
           <td>
@@ -35,3 +39,4 @@
     </table>
   </body>
 </html>
+{% endblock %}

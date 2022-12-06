@@ -11,6 +11,7 @@ class User(UserMixin, User_details.Model):
     email = User_details.Column(User_details.String(100), unique=True)
     password = User_details.Column(User_details.String(100))
     name = User_details.Column(User_details.String(1000))
+    # Assigning each variable to the column it is part of as part of the loging in mechanism.
     
 def get_filenames():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
@@ -19,6 +20,7 @@ def get_filenames():
     file_name =''
     for x in database:
         file_name += (f' {x[5]}')
+        # Adding the whole column for file_names to the filename variable.
     return file_name
 
 def get_content():
@@ -27,31 +29,21 @@ def get_content():
     cur.execute('select * from posts')
     content = cur.fetchall()
     return content
+    # Returning the whole database as a variable with each element in the content variable as an entire row in the database.
 
 def get_database():
     con = sql.connect(path.join(ROOT, 'food_database.db'))
     cur = con.cursor()
     database = cur.execute('select * from posts')
     return database
+    # Returning the whole database as a variable with each element in the database variable as an entire column in the database.
 
 def get_bids():
     con = sql.connect('Bidding.db')
     cur = con.cursor()
-    content = cur.execute('select * from bids')
+    content = cur.execute('select * from Bids')
     return content
-
-def get_users(User_ID):
-    con = sql.connect('User_details.SQLITE')
-    cur = con.cursor()
-    cur.execute('select * from user')
-    content = cur.fetchall()
-    i = 0
-    name = ''
-    for x in content:
-        i += 1
-        if User_ID == i:
-            name = (f'{x[3]}')
-    return name    
+    # Assigning the whole database column by column to the content variable.
 
 def bid_comments(post_part_of):
     post_parts_of = []
@@ -75,11 +67,13 @@ def create_bid(price, information, post_ID, user_name):
     cur.execute('insert into Bids (user_name, comment, post_part_of, price) values(?, ?, ?, ?)', (user_name, information, post_ID, price))
     con.commit()
     con.close()
+    # Just to create a bid for content.
 
 def convert_into_binary(file_path):
     with open(file_path, 'rb') as file:
         binary = file.read()
         return binary
+    # Converting image to binary to be stored.
     
 def read_blob_data(entry_id):
     try:
@@ -88,13 +82,17 @@ def read_blob_data(entry_id):
         sql_fetch_blob_query = 'SELECT * from posts where id = ?' 
         cur.execute(sql_fetch_blob_query, (entry_id,))
         record = cur.fetchall()
+        # Connecting to database and storing the database variable in record.
         for row in record:
             converted_file_name = row[1]
             photo_binarycode = row[2]
+            # Assigning the binary code to photo_binarycode and filename to converted_file_name.
             last_slash_index = converted_file_name.rfind("/") + 1
             final_file_name = converted_file_name[last_slash_index:]
+            # Getting the price of the post
             write_to_file(photo_binarycode, final_file_name)
         cur.close()
+        #  Connecting to the database and copying newly created post and putting it into file system.
     except sql.Error as error:
         print('[INFO] " Failed to read blob data from sqlite table', error)
     finally:
@@ -105,6 +103,7 @@ def write_to_file(binary_data, file_name):
     with open(file_name, 'wb') as files:
         files.write(binary_data.encode('utf-8'))
     print('[DATA] : The following file has been writen to the project directory: ', file_name)
+    # Creating the file of the newly created post.
 
 def insert_into_database(price, content, user_name, title, filename, file_blob):
     try:
@@ -115,6 +114,7 @@ def insert_into_database(price, content, user_name, title, filename, file_blob):
         cur.execute(sql_insert_file_query, (price, content, user_name, title, filename, file_blob, ))
         conn.commit()
         print('[INFO] : The blob for ', filename, 'is in the database.')
+        # Inserting the post into the database
         last_updated_entry = cur.lastrowid
         return last_updated_entry
     except Error as e:

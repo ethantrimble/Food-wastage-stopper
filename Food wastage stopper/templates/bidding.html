@@ -1,22 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
 <html>
     <title>
         Bidding page 
     </title>
     <body>
-        {% for x in unique_post_values %}
-            <h2> Post {{ x }}</h2>
+        {% for y in unique_post_values %}
+            <h2> Post {{ y }}</h2>
             <form action = '/bidding' method="post">
                 <input placeholder = 'Bidding price' name = 'bidding price'>
                 <input placeholder = 'information' name = 'information'> 
-                <input value = {{ x }} type = "hidden" name = "ID_value">
+                <input value = {{ y }} type = "hidden" name = "ID_value">
                 <input type = 'submit' value = 'Submit'>
             </form>
-                {% for x in unique_post_values %}
-                    <div> {{ x }}</div>
-                {% endfor %}
-                {% for x in number_of_occurances %}
-                    <div> {{ x }}</div>
-                {% endfor %}
+            {% for x in content %}
+                {% if x[3] == y %}
+                    <b>User: </b><i>{{ x[0] }}</i><b> Content: </b><i>{{ x[1] }}</i><b> Price: </b><i> {{ x[2] }}</i><br>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
     </body>
 </html>
+{% endblock %}
